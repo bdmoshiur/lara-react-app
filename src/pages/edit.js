@@ -1,21 +1,39 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import http from "../http";
 
-export default function Create() {
+export default function Edit(props) {
   const [inputs, setInputs] = useState([]);
   const navigate = useNavigate();
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    FatchUser();
+  }, []);
+
+  const FatchUser = () => {
+    http.get("users/"+ id +"/edit")
+      .then((response) => {
+        setInputs({
+          name: response.data.name,
+          email: response.data.email,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setInputs(inputs => ({ ...inputs, [name]: value }));
+    setInputs((inputs) => ({ ...inputs, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const updateSubmit = (event) => {
     event.preventDefault();
-    http
-      .post("users", inputs)
+    http.post("users/" + id, inputs)
       .then((response) => {
         navigate("/");
       })
@@ -25,7 +43,7 @@ export default function Create() {
   };
   return (
     <div>
-        <h2>Create User</h2>
+      <h2>Edit User</h2>
       <form>
         <div className="form-group">
           <label for="name">Name</label>
@@ -53,19 +71,11 @@ export default function Create() {
             placeholder="Enter email"
           />
         </div>
-        <div className="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            value={inputs.password || ""}
-            onChange={handleChange}
-            id="exampleInputPassword1"
-            placeholder="Password"
-          />
-        </div>
-        <button type="submit" onClick={ handleSubmit } className="btn btn-primary">
+        <button
+          type="submit"
+          onClick={updateSubmit}
+          className="btn btn-primary"
+        >
           Submit
         </button>
       </form>
