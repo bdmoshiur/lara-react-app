@@ -5,6 +5,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/home";
 import Create from "./pages/create";
 import Edit from "./pages/edit";
+import View from "./pages/view";
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/create" element={<Create />} />
           <Route path="/edit/:id" element={<Edit />} />
+          <Route path="/view/:id" element={<View />} />
+
         </Routes>
       </div>
     </div>

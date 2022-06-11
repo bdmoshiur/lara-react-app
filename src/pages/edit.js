@@ -5,7 +5,6 @@ import http from "../http";
 export default function Edit(props) {
   const [inputs, setInputs] = useState([]);
   const navigate = useNavigate();
-
   const { id } = useParams();
 
   useEffect(() => {
@@ -33,8 +32,7 @@ export default function Edit(props) {
 
   const updateSubmit = (event) => {
     event.preventDefault();
-    http.post("users/" + id, inputs)
-      .then((response) => {
+    http.put("users/"+id, inputs).then((response) => {
         navigate("/");
       })
       .catch((error) => {

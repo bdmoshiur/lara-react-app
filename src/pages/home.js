@@ -20,6 +20,13 @@ export default function Home() {
       });
   };
 
+  const deleteUser = (id) => {
+    http.delete("users/" + id)
+      .then((response) => {
+        FatchAllUsers();
+      })
+  }
+
   return (
     <div>
         <h1>All Users</h1>
@@ -40,7 +47,8 @@ export default function Home() {
                     <td>{user.email}</td>
                     <td>
                         <Link to={{ pathname:"/edit/"+user.id }} className="btn btn-info" >Edit</Link>
-                        <Link to={{  }} className="btn btn-danger">Delete</Link>
+                        &nbsp;<Link to={{ pathname:"/view/"+user.id }} className="btn btn-info" >View</Link>
+                        &nbsp;<button onClick={() => deleteUser(user.id) } className="btn btn-danger">Delete</button>
                     </td>
                 </tr>
             ))}
